@@ -81,6 +81,40 @@ switch ($method | $uri) {
         break;
 
     /**
+    * Path: POST /api/data/items
+    * Task: Add a new item to the database
+    */
+    case ($method == "POST" && $uri == "/api/data/items"):
+        include "../endpoints/additem.end.php";
+
+        try {
+            $itemsData = handleAddItem();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["data"] = $itemsData;
+        echo json_encode($result);
+        break;
+
+    /**
+    * Path: POST /api/data/items
+    * Task: Add a new item to the database
+    */
+    case ($method == "PUT" && $uri == "/api/data/items"):
+        include "../endpoints/modifyitem.end.php";
+
+        try {
+            $itemsData = handleModifyItem();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["data"] = $itemsData;
+        echo json_encode($result);
+        break;
+
+    /**
     * Path: DELETE /api/data/items?id=<int>
     * Task: Delete a particular entry, return updated data
     */

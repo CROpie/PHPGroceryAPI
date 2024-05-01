@@ -32,7 +32,7 @@
     <form id="loginForm">
         <input type="text" name="username" placeholder="username" value="chris"/>
         <input type="password" name="password" placeholder="password" value="fishandchips"/>
-        <button type="submit" name="loginBtn" id="loginBtn">Submit</button>
+        <button type="submit" name="loginBtn">Submit</button>
     </form>
 
     <h3>Log Out</h3>
@@ -40,6 +40,15 @@
 
     <h3>Get Items</h3>
     <button id="getItemsBtn">Get Items</button>
+
+    <h3>Add Item</h3>
+    <form id="addItemForm">
+        <label for="itemName">Item Name:</label>
+        <input type="text" id="itemName" name="itemname" />
+        <label for="itemAmount">Amount:</label>
+        <input type="text" id="itemAmount" name="itemamount" />
+        <button type="submit" name="addItemBtn">Submit</button>
+    </form>
 
     <h3>Items</h3>
     <table>

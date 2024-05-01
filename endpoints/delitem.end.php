@@ -23,7 +23,7 @@ function handleDelItem() {
 
     $items = new ItemsContr($authHeader, $jwtHandler);
 
-    // decoded JWT, getItems if user is authorized
+    // decode JWT, delete an item if user is authorized
     // any errors will be caught by try/catch in API index
     $itemsData = $items->delItem($id);
 

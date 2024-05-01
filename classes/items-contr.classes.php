@@ -34,4 +34,21 @@ class ItemsContr extends Items {
         return $this->getItemsFromDB();
     }
 
+    public function addItem($itemName, $itemAmount) {
+        $payload = $this->jwtHandler->decodeJWT($this->authHeader);
+
+        $this->addItemToDB($itemName, $itemAmount);
+
+        return $this->getItemsFromDB();
+
+    }
+
+    public function modifyItem($itemId, $itemName, $itemAmount) {
+        $payload = $this->jwtHandler->decodeJWT($this->authHeader);
+
+        $this->modifyItemInDB($itemId, $itemName, $itemAmount);
+
+        return $this->getItemsFromDB();
+    }
+
 }
