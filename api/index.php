@@ -23,7 +23,7 @@ switch ($method | $uri) {
             $outcome = handleRegister();
         } catch (Exception $e) {
             $result["success"] = false;
-            $result["message"] = $e;
+            $result["message"] = $e->getMessage();
         }
         echo json_encode($result);
         break;
