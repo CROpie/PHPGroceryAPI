@@ -1,0 +1,7 @@
+phpGroceryAPI
+
+CREATE TABLE Users (
+    userId int PRIMARY KEY AUTO_INCREMENT,
+    username text,
+    password text
+);
