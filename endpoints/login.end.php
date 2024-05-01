@@ -1,24 +1,24 @@
 <?php
 
-function handleRegister() {
+function handleLogin() {
 
 // grab data
 $username = $_POST["username"];
 $password = $_POST["password"];
-$passwordRepeat = $_POST["passwordRepeat"];
 
 // instantiate registerContr class
 include "../classes/dbh.classes.php";
-include "../classes/register.classes.php";
-include "../classes/register-contr.classes.php";
+include "../classes/login.classes.php";
+include "../classes/login-contr.classes.php";
 
-$register = new RegisterContr($username, $password, $passwordRepeat);
+$login = new LoginContr($username, $password);
 
-// run validation and user registration
+// run validation and user log in
 // any errors will be caught by try/catch in API index
-$register->registerUser();
+$userData = $login->loginUser();
 
-// no errors = success
-return true;
+// return the userData if it exists, and if not it will be handled by the try/catch
+// this could be the pathway for getting the JWT to the client..?
+return $userData;
 
 }

@@ -12,15 +12,51 @@ $result = array(
 switch ($method | $uri) {
 
     /**
-    * Path: GET /api/users
-    * Task: show all the users
+    * Path: POST /api/auth/register
+    * Task: Register new users to the system
     */
     case ($method == "POST" && $uri == "/api/auth/register"):
+        // import handleRegister function
+        include "../endpoints/register.end.php";
+
+        try {
+            $outcome = handleRegister();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        echo json_encode($result);
+        break;
+
+    /**
+    * Path: POST /api/auth/register
+    * Task: Register new users to the system
+    */
+    case ($method == "POST" && $uri == "/api/auth/login"):
         // import handleRegister function
         include "../endpoints/login.end.php";
 
         try {
-            $outcome = handleRegister();
+            $userData = handleLogin();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["userData"] = $userData;
+        echo json_encode($result);
+        break;
+
+    /**
+    * Path: GET /api/auth/logout
+    * Task: Log out of the current session
+    */
+    case ($method == "GET" && preg_match("/\/api\/auth\/logout/", $uri)):
+        // not all that useful at the moment, but in future,
+        // maybe will want to clear a token from storage
+        include "../endpoints/logout.end.php";
+
+        try {
+            $outcome = handleLogout();
         } catch (Exception $e) {
             $result["success"] = false;
             $result["message"] = $e->getMessage();
