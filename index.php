@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
     <title>Document</title>
 </head>
 <body>
@@ -36,5 +37,14 @@
 
     <h3>Log Out</h3>
     <button id="logoutBtn">Log Out</button>
+
+    <h3>Get Items</h3>
+    <button id="getItemsBtn">Get Items</button>
+
+    <h3>Items</h3>
+    <table>
+        <thead id="itemsTableHeader"></thead>
+        <tbody id="itemsTableBody"></tbody>
+    </table>
 </body>
 </html>

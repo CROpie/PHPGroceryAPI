@@ -5,3 +5,12 @@ CREATE TABLE Users (
     username text,
     password text
 );
+
+CREATE TABLE Items (
+    itemId INT PRIMARY KEY AUTO_INCREMENT,
+    name TEXT NOT NULL,
+    amount INT
+);
+
+INSERT INTO Items (name, amount)
+    VALUES ("nectarine", 47), ("chocolate", 2);

@@ -13,18 +13,18 @@ class LoginContr extends Login {
 
 private $username;
 private $password;
-private $jwt;
+private $jwtHandler;
 
-    public function __construct($username, $password, $jwt) {
+    public function __construct($username, $password, $jwtHandler) {
         $this->username = $username;
         $this->password = $password;
-        $this->jwt = $jwt;
+        $this->jwtHandler = $jwtHandler;
     }
 
     public function loginUser() {
         $this->performValidation();
         $userData = $this->getUser($this->username, $this->password);
-        return $this->jwt->generateJWT($userData);
+        return $this->jwtHandler->generateJWT($userData);
     }
 
     private function performValidation() {

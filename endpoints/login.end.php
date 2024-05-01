@@ -13,9 +13,9 @@ include "../classes/login-contr.classes.php";
 include "../classes/jwt-handler.classes.php";
 include "../utils/secretkey.utils.php";
 
-$jwt = new JWTHandler($secretKey);
+$jwtHandler = new JWTHandler($secretKey);
 
-$login = new LoginContr($username, $password, $jwt);
+$login = new LoginContr($username, $password, $jwtHandler);
 
 // run validation and user log in, generate a JWT
 // any errors will be caught by try/catch in API index

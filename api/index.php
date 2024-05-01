@@ -55,11 +55,45 @@ switch ($method | $uri) {
         include "../endpoints/logout.end.php";
 
         try {
-            $outcome = handleLogout();
+            handleLogout();
         } catch (Exception $e) {
             $result["success"] = false;
             $result["message"] = $e->getMessage();
         }
+        echo json_encode($result);
+        break;
+
+    /**
+    * Path: GET /api/data/items
+    * Task: Retrieve items for authorized users
+    */
+    case ($method == "GET" && $uri == "/api/data/items"):
+        include "../endpoints/getitems.end.php";
+
+        try {
+            $itemsData = handleGetItems();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["data"] = $itemsData;
+        echo json_encode($result);
+        break;
+
+    /**
+    * Path: DELETE /api/data/items?id=<int>
+    * Task: Delete a particular entry, return updated data
+    */
+    case ($method == "DELETE" && preg_match("/\/api\/data\/items\?id=/", $uri)):
+        include "../endpoints/delitem.end.php";
+
+        try {
+            $itemsData = handleDelItem();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["data"] = $itemsData;
         echo json_encode($result);
         break;
 
