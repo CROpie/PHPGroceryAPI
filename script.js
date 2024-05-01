@@ -36,7 +36,7 @@ async function handleLogin(event) {
   console.log(json)
 
   if (json.success) {
-    sessionStorage.setItem('userData', JSON.stringify(json.userData))
+    sessionStorage.setItem('token', JSON.stringify(json.JWT))
   }
 
   //   if (!json.success) {

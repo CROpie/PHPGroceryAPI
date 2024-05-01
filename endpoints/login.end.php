@@ -10,15 +10,18 @@ $password = $_POST["password"];
 include "../classes/dbh.classes.php";
 include "../classes/login.classes.php";
 include "../classes/login-contr.classes.php";
+include "../classes/jwt-handler.classes.php";
+include "../utils/secretkey.utils.php";
 
-$login = new LoginContr($username, $password);
+$jwt = new JWTHandler($secretKey);
 
-// run validation and user log in
+$login = new LoginContr($username, $password, $jwt);
+
+// run validation and user log in, generate a JWT
 // any errors will be caught by try/catch in API index
-$userData = $login->loginUser();
+$jwt = $login->loginUser();
 
-// return the userData if it exists, and if not it will be handled by the try/catch
-// this could be the pathway for getting the JWT to the client..?
-return $userData;
+// return the jwt if is created successfully. If not it will be handled by the try/catch
+return $jwt;
 
 }

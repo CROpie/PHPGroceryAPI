@@ -29,20 +29,19 @@ switch ($method | $uri) {
         break;
 
     /**
-    * Path: POST /api/auth/register
-    * Task: Register new users to the system
+    * Path: POST /api/auth/login
+    * Task: Login a user, and if successful, return a JWT
     */
     case ($method == "POST" && $uri == "/api/auth/login"):
-        // import handleRegister function
         include "../endpoints/login.end.php";
 
         try {
-            $userData = handleLogin();
+            $JWT = handleLogin();
         } catch (Exception $e) {
             $result["success"] = false;
             $result["message"] = $e->getMessage();
         }
-        $result["userData"] = $userData;
+        $result["JWT"] = $JWT;
         echo json_encode($result);
         break;
 
