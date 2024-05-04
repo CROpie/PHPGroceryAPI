@@ -55,5 +55,15 @@
         <thead id="itemsTableHeader"></thead>
         <tbody id="itemsTableBody"></tbody>
     </table>
+
+    <h2>Exploring XML</h2>
+    <h3>Add Item  via XML</h3>
+    <form id="addItemFormXml">
+        <label for="itemName">Item Name:</label>
+        <input type="text" id="itemNameXml" name="itemname" value="nectarine"/>
+        <label for="itemAmount">Amount:</label>
+        <input type="text" id="itemAmountXml" name="itemamount" value="47" />
+        <button type="submit" name="addItemBtn">Submit</button>
+    </form>
 </body>
 </html>

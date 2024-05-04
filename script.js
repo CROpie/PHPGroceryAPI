@@ -1,3 +1,109 @@
+async function handleAddItemXml(event) {
+  event.preventDefault()
+
+  const JWT = sessionStorage.getItem('token')
+
+  // no JWT so don't bother connecting to the backend
+  if (!JWT) {
+    // print not logged in message
+    return
+  }
+
+  const formData = new FormData(event.target)
+
+  // generating XML using a template string
+  let xmlData = `
+    <item>
+      <name>${formData.get('itemname')}</name>
+      <amount>${formData.get('itemamount')}</amount>
+    </item>
+  `
+
+  // generating XML using DOM tree
+  let xmlDoc = document.implementation.createDocument('', 'item', null)
+  const root = xmlDoc.documentElement
+  const nameElem = xmlDoc.createElement('name')
+  nameElem.textContent = formData.get('itemname')
+  root.appendChild(nameElem)
+
+  const amountElem = xmlDoc.createElement('amount')
+  amountElem.textContent = formData.get('itemamount')
+  root.appendChild(amountElem)
+
+  const xmlString = new XMLSerializer().serializeToString(xmlDoc)
+
+  // console.log(xmlData)
+  // console.log(xmlString)
+
+  // the only difference between the two is the amount of whitespace
+  // whitespace between elements in XML doesn't matter, but inside elements does
+  // therefore xmlData and xmlString are considered identical. Both work for posting the data.
+
+  const response = await fetch('/api/data/xmlitems', {
+    method: 'POST',
+    body: xmlData,
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+      'Content-Type': 'application/xml',
+    },
+  })
+
+  if (!response.ok) {
+    console.log('something went wrong...')
+    return
+  }
+
+  // get the response as text
+  const xmlText = await response.text()
+
+  // Use JSON.stringify to visualize whitespace and newlines
+  // Using this command located two newline characters which was preventing the XML from being handled properly
+  console.log(`Raw XML Response:`, JSON.stringify(xmlText))
+
+  /* xmlText looked like this:
+  \n\n
+  <?xml version="1.0"?>
+  <root>
+    <success>1</success>
+    <message />
+    <data>
+      <item>
+        <itemId>4</itemId>
+        <name>apples</name>
+        <amount>11</amount>
+      </item>
+
+      <item>
+        <itemId>5</itemId>
+        <name>tomatoes</name>
+        <amount>8</amount>
+      </item>
+    </data>
+  </root>
+
+  */
+
+  // parse the XML text into a DOM-like structure
+  const parser = new DOMParser()
+  const xmlResponseDoc = parser.parseFromString(xmlText, 'application/xml')
+  const dataTag = xmlResponseDoc.getElementsByTagName('data')[0]
+  const xmlItems = dataTag.getElementsByTagName('item')
+  console.log(xmlItems)
+
+  // process the XML
+  const items = []
+
+  for (const xmlItem of xmlItems) {
+    const itemId = parseInt(xmlItem.getElementsByTagName('itemId')[0].textContent, 10)
+    const name = xmlItem.getElementsByTagName('name')[0].textContent
+    const amount = parseInt(xmlItem.getElementsByTagName('amount')[0].textContent, 10)
+
+    items.push({ itemId, name, amount })
+  }
+
+  renderItems(items)
+}
+
 async function handleSaveEditItem(itemsData, i) {
   const JWT = sessionStorage.getItem('token')
 
@@ -315,6 +421,7 @@ function init() {
   document.getElementById('logoutBtn').addEventListener('click', handleLogout)
   document.getElementById('getItemsBtn').addEventListener('click', handleGetItems)
   document.getElementById('addItemForm').addEventListener('submit', handleAddItem)
+  document.getElementById('addItemFormXml').addEventListener('submit', handleAddItemXml)
 }
 
 onload = init

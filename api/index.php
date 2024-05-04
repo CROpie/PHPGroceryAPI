@@ -1,9 +1,8 @@
 <?php
-
 $uri = $_SERVER["REQUEST_URI"];
 $method = $_SERVER["REQUEST_METHOD"];
 
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 $result = array(
     "success" => true,
     "message" => '',
@@ -98,8 +97,8 @@ switch ($method | $uri) {
         break;
 
     /**
-    * Path: POST /api/data/items
-    * Task: Add a new item to the database
+    * Path: PUT /api/data/items
+    * Task: Modify an item in the database
     */
     case ($method == "PUT" && $uri == "/api/data/items"):
         include "../endpoints/modifyitem.end.php";
@@ -132,6 +131,29 @@ switch ($method | $uri) {
         break;
 
     /**
+    * Path: POST /api/data/items
+    * Task: Add a new item to the database
+    */
+    case ($method == "POST" && $uri == "/api/data/xmlitems"):
+        include "../endpoints/additemxml.end.php";
+        include "../utils/arraytoxml.utils.php";
+
+        try {
+            $itemsData = handleAddItemXml();
+        } catch (Exception $e) {
+            $result["success"] = false;
+            $result["message"] = $e->getMessage();
+        }
+        $result["data"] = $itemsData;
+
+        header("Content-Type: application/xml");
+        $myString = arrayToXmlString($result);
+        echo $myString;
+        // echo arrayToXmlString($result);
+        break;
+
+
+    /**
     * Path: ?
     * Task: this path doesn't match any of the defined paths
     *       throw an error
@@ -141,7 +163,4 @@ switch ($method | $uri) {
         $result["message"] = "unknown api path";
         echo json_encode($result);
         break;
-
-    }
-
-?>
+}
